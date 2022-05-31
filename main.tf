@@ -13,6 +13,13 @@ provider "null" {
 
 resource "null_resource" "test" {
   provisioner "local-exec" {
-    command = "echo 'hello world' "
+    command = "echo 'hello world changed' "
+  }
+}
+
+
+resource "null_resource" "test2" {
+  provisioner "local-exec" {
+    command = "echo 'hello world2' "
   }
 }
