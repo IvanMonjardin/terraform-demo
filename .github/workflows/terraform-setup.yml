@@ -13,10 +13,12 @@ jobs:
     name: Terraform
     
     steps:
+    
+    - uses: actions/checkout@v3
     - uses: hashicorp/setup-terraform@v2
 
     - run: terraform init
-
+    
     - id: plan
       run: terraform plan 
 
