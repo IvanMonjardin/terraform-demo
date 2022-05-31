@@ -17,11 +17,15 @@ jobs:
     - uses: actions/checkout@v3
     - uses: hashicorp/setup-terraform@v2
 
-    - run: terraform init
-    
-    - id: plan
-      run: terraform plan 
+    - name: Terraform Init
+      id: init
+      run: terraform init
 
-    - run: echo ${{ steps.plan.outputs.stdout }}
-    - run: echo ${{ steps.plan.outputs.stderr }}
-    - run: echo ${{ steps.plan.outputs.exitcode }}
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
