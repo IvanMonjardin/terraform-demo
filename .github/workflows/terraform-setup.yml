@@ -24,8 +24,15 @@ jobs:
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
-
+      
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color
-      continue-on-error: true
+      run: terraform plan -out workspace.plan
+
+    - name: Post Plan
+      if: always() && github.ref != 'refs/heads/master' && (steps.plan.outcome == 'success' || steps.plan.outcome == 'failure')
+      uses: robburger/terraform-pr-commenter@v1
+      with:
+        commenter_type: plan
+        commenter_input: ${{ format('{0}{1}', steps.plan.outputs.stdout, steps.plan.outputs.stderr) }}
+        commenter_exitcode: ${{ steps.plan.outputs.exitcode }}
